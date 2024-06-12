@@ -4,8 +4,10 @@ import {
 	BeforeUpdate,
 	Column,
 	Entity,
+	OneToMany,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ProductImage } from './product-image.entity';
 
 export const GENDERS = ['men', 'women', 'kid', 'unisex'];
 
@@ -37,6 +39,12 @@ export class Product {
 
 	@Column('text', { array: true, default: [] })
 	tags?: string[];
+
+	@OneToMany(() => ProductImage, (productImage) => productImage.product, {
+		cascade: true,
+		eager: true,
+	})
+	images?: ProductImage[];
 
 	checkSlug(text: string): string {
 		return slugify(text, {
