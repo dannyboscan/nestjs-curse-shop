@@ -7,6 +7,8 @@ export class SeedService {
 	constructor(private readonly productService: ProductsService) {}
 
 	async seedData() {
-		return await this.productService.bulkCreateProducts(productSeedData.products);
+		return await this.productService.bulkCreateProducts(
+			productSeedData.products,
+		);
 	}
 }

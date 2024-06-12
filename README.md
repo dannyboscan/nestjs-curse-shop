@@ -23,3 +23,7 @@ docker-compose up -d
 ```shell
 yarn start:dev
 ```
+7. Llenar la base de datos con información de productos mediante el seed
+```shell
+curl -o /dev/null http://localhost:9000/api/seed/
+```

@@ -11,7 +11,7 @@ import { ProductImage } from './product-image.entity';
 
 export const GENDERS = ['men', 'women', 'kid', 'unisex'];
 
-@Entity()
+@Entity({ name: 'products' })
 export class Product {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
