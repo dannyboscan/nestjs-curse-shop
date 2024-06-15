@@ -8,6 +8,7 @@ export const envValidationSchema = Joi.object({
 	POSTGRES_PORT: Joi.number().default(5432),
 	POSTGRES_SYNC: Joi.boolean().default(false),
 	PORT: Joi.number().default(9000),
+	JWT_SECRET: Joi.string().required(),
 });
 
 export const envConfiguration = () => ({
@@ -20,4 +21,5 @@ export const envConfiguration = () => ({
 		sync: process.env.POSTGRES_SYNC,
 	},
 	port: process.env.PORT,
+	jwt_secret: process.env.JWT_SECRET,
 });

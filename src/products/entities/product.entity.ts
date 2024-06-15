@@ -4,10 +4,12 @@ import {
 	BeforeUpdate,
 	Column,
 	Entity,
+	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductImage } from './product-image.entity';
+import { User } from 'src/auth/entities/user.entity';
 
 export const GENDERS = ['men', 'women', 'kid', 'unisex'];
 
@@ -52,6 +54,13 @@ export class Product {
 			remove: /[*+~.()'"!:@]/g,
 		});
 	}
+
+	@ManyToOne(() => User, (user) => user.id, {
+		eager: true,
+		nullable: true,
+		onDelete: 'SET NULL',
+	})
+	createdBy: User;
 
 	@BeforeInsert()
 	beforeInsert() {
