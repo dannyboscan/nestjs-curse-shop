@@ -16,13 +16,23 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { Auth, GetRequestUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
 import { User } from 'src/auth/entities/user.entity';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Product } from '../entities';
 
+@ApiTags('Products')
+@ApiBearerAuth()
 @Controller('products')
 @Auth(ValidRoles.user)
 export class ProductsController {
 	constructor(private readonly productsService: ProductsService) {}
 
 	@Post()
+	@ApiResponse({
+		status: 201,
+		description: 'Product was created',
+		type: Product,
+	})
+	@ApiResponse({ status: 401, description: 'Unauthorized token si needed' })
 	create(
 		@Body() createProductDto: CreateProductDto,
 		@GetRequestUser() user: User,

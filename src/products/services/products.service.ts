@@ -142,6 +142,16 @@ export class ProductsService {
 		}
 	}
 
+	async removeAll() {
+		try {
+			const productQueryBuilder =
+				this.productRepository.createQueryBuilder();
+			return await productQueryBuilder.where({}).delete().execute();
+		} catch (error) {
+			this.handleDBExceptions(error);
+		}
+	}
+
 	private handleDBExceptions(error: any) {
 		if (typeof error === 'object' && error.hasOwnProperty('table'))
 			throw new BadRequestException(`${error.message}: ${error.detail}`);
@@ -150,18 +160,7 @@ export class ProductsService {
 		this.logger.error(`${error.message}: ${error.detail}`);
 	}
 
-	private async deleteAllProducts() {
-		const query = this.productRepository.createQueryBuilder();
-		try {
-			await query.delete().where({}).execute();
-		} catch (error) {
-			this.handleDBExceptions(error);
-		}
-	}
-
-	async bulkCreateProducts(createProductsDto: CreateProductDto[]) {
-		await this.deleteAllProducts();
-
+	async bulkCreate(createProductsDto: CreateProductDto[]) {
 		try {
 			const products = await this.productRepository.save(
 				createProductsDto.map(({ images = [], ...productFields }) => {

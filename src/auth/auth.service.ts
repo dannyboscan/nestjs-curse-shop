@@ -23,6 +23,10 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 	) {}
 
+	checkAuthStatus(user: User) {
+		return { ...user, accessToken: this.getJwt({ id: user.id }) };
+	}
+
 	async create(createUserDto: CreateUserDto) {
 		try {
 			createUserDto.password = bcrypt.hashSync(
@@ -71,6 +75,32 @@ export class AuthService {
 		const user = await this.userRepository.findOneBy({ id });
 
 		return user;
+	}
+
+	async removeAll() {
+		try {
+			const userQueryBuilder = this.userRepository.createQueryBuilder();
+			return await userQueryBuilder.where({}).delete().execute();
+		} catch (error) {
+			this.handleDBExceptions(error);
+		}
+	}
+
+	async bulkCreate(createUsersDto: CreateUserDto[]) {
+		try {
+			const products = await this.userRepository.save(
+				createUsersDto.map(({ password, ...userFields }) => {
+					return {
+						...userFields,
+						password: (password = bcrypt.hashSync(password, 10)),
+					};
+				}),
+			);
+
+			return products;
+		} catch (error) {
+			this.handleDBExceptions(error);
+		}
 	}
 
 	private handleDBExceptions(error: any): void {

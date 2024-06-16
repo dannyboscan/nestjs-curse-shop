@@ -1,3 +1,5 @@
+import { ValidRoles } from 'src/auth/interfaces';
+
 interface SeedProduct {
 	description: string;
 	images: string[];
@@ -14,11 +16,36 @@ interface SeedProduct {
 type ValidSizes = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
 type ValidTypes = 'shirts' | 'pants' | 'hoodies' | 'hats' | 'shoes';
 
+interface IUser {
+	email: string;
+	password: string;
+	fullName: string;
+	isAdmin: boolean;
+	roles: string[];
+}
+
 interface SeedData {
+	users: IUser[];
 	products: SeedProduct[];
 }
 
 export const productSeedData: SeedData = {
+	users: [
+		{
+			email: 'dannyboscan@gmail.com',
+			password: 'Abc_123',
+			fullName: 'Danny Boscan',
+			isAdmin: true,
+			roles: Object.keys(ValidRoles),
+		},
+		{
+			email: 'dboscan@example.com',
+			password: '!^QFhpiGsfT0WaO2',
+			fullName: 'Jermaine Ovalles',
+			isAdmin: true,
+			roles: Object.keys(ValidRoles),
+		},
+	],
 	products: [
 		{
 			'title': 'Air Jordan 6 Retro Shoe',

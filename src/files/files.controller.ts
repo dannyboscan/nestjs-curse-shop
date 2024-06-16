@@ -14,8 +14,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { fileFilter, fileNamer } from './helpers';
 import { Request, Response } from 'express';
+import { Auth } from 'src/auth/decorators';
+import { ValidRoles } from 'src/auth/interfaces';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Files')
 @Controller('files')
+@Auth(ValidRoles.user)
 export class FilesController {
 	constructor(private readonly filesService: FilesService) {}
 
@@ -30,6 +35,7 @@ export class FilesController {
 			}),
 		}),
 	)
+	@ApiConsumes('multipart/form-data')
 	uploadProductFile(
 		@UploadedFile() file: Express.Multer.File,
 		@Req() req: Request,
