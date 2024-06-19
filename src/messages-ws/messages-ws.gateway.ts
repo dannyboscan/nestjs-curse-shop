@@ -43,8 +43,6 @@ export class MessagesWsGateway
 			client.disconnect();
 			throw new WsException(error.message);
 		}
-
-		console.log(jwtPayload);
 	}
 
 	handleDisconnect(client: Socket) {
